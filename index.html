@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ISR Uranium Mining Simulation</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  
+  <header class="app-header">
+    <h1>In Situ Recovery (ISR) Mining</h1>
+    <p>Interactive process simulation</p>
+  </header>
+
+  <main class="sim-wrapper">
+    <div class="simulation-container" id="sim-container">
+      
+      <svg id="diagram" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <linearGradient id="barren-fluid" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#34d399"/>
+            <stop offset="100%" stop-color="#059669"/>
+          </linearGradient>
+          <linearGradient id="pregnant-fluid" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#fbbf24"/>
+            <stop offset="100%" stop-color="#d97706"/>
+          </linearGradient>
+          
+          <filter id="glow-green" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="4" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+          </filter>
+          <filter id="glow-orange" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="4" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+          </filter>
+
+          <!-- Pattern for Irregular White Rocks -->
+          <pattern id="irregular-rocks" x="0" y="0" width="80" height="80" patternUnits="userSpaceOnUse">
+            <rect width="80" height="80" fill="#e2e8f0" />
+            <polygon points="10,5 25,2 35,15 15,30 2,12" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1"/>
+            <polygon points="45,10 65,5 75,22 55,30 40,20" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+            <polygon points="25,40 45,35 55,55 35,65 15,50" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+            <polygon points="5,55 20,45 25,65 10,75 2,60" fill="#94a3b8" stroke="#64748b" stroke-width="1"/>
+            <polygon points="60,45 75,40 78,60 65,70" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1"/>
+            <polygon points="35,10 40,5 50,15" fill="#f1f5f9" />
+          </pattern>
+
+          <!-- Arrow Marker -->
+          <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8" />
+          </marker>
+        </defs>
+
+        <!-- Pipes (Background Outlines) -->
+        <path d="M 160 430 L 160 100 C 160 80, 170 70, 190 70 L 400 70 C 420 70, 430 80, 430 100 L 430 300" fill="none" class="base-green-pipe" stroke-width="16" />
+        <path d="M 570 300 L 570 150 C 570 130, 580 120, 600 120 L 820 120 C 840 120, 850 130, 850 150 L 850 350" fill="none" class="base-orange-pipe" stroke-width="8" />
+
+        <!-- Piping Flow Overlay Animations -->
+        <path id="green-fill-overlay" d="M 160 430 L 160 100 C 160 80, 170 70, 190 70 L 400 70 C 420 70, 430 80, 430 100 L 430 300" fill="none" stroke="#10b981" stroke-width="14" filter="url(#glow-green)" />
+        <path id="orange-fill-overlay" d="M 570 300 L 570 150 C 570 130, 580 120, 600 120 L 820 120 C 840 120, 850 130, 850 150 L 850 350" fill="none" stroke="#f59e0b" stroke-width="6" filter="url(#glow-orange)" />
+
+        <!-- Continuous Flow Overlay -->
+        <path id="green-dash-overlay" class="continuous-flow flow-green" d="M 160 430 L 160 100 C 160 80, 170 70, 190 70 L 400 70 C 420 70, 430 80, 430 100 L 430 300" fill="none" stroke="#00ff88" stroke-width="10" stroke-dasharray="15 20" filter="url(#glow-green)" />
+        <path id="orange-dash-overlay" class="continuous-flow flow-orange" d="M 570 300 L 570 150 C 570 130, 580 120, 600 120 L 820 120 C 840 120, 850 130, 850 150 L 850 350" fill="none" stroke="#ffcc00" stroke-width="4" stroke-dasharray="8 12" filter="url(#glow-orange)" />
+
+        <!-- Valve: White with blue knob on ONE side -->
+        <g id="valve">
+          <rect x="415" y="180" width="30" height="40" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2" rx="4" />
+          <polygon points="445,200 475,185 475,215" fill="#3b82f6" stroke="#2563eb" stroke-width="2" />
+          <circle cx="430" cy="200" r="5" fill="#94a3b8" />
+          <text x="430" y="170" font-family="sans-serif" font-size="10" font-weight="bold" fill="#3b82f6" text-anchor="middle">VALVE</text>
+        </g>
+
+        <!-- EXTERNAL LABELS WITH ARROWS -->
+        
+        <!-- Barren Lixiviant External Label -->
+        <g class="hover-group" onclick="handleLabelClick('barren')">
+          <text x="210" y="110" class="svg-label" text-anchor="middle" fill="#10b981">BARREN</text>
+          <text x="210" y="130" class="svg-label" text-anchor="middle" fill="#10b981">LIXIVIANT</text>
+          <line x1="210" y1="140" x2="210" y2="280" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)" stroke-dasharray="4 4" />
+        </g>
+
+        <!-- Pregnant Lixiviant External Label -->
+        <g class="hover-group" onclick="handleLabelClick('pregnant')">
+          <text x="790" y="110" class="svg-label" text-anchor="middle" fill="#f59e0b">PREGNANT</text>
+          <text x="790" y="130" class="svg-label" text-anchor="middle" fill="#f59e0b">LIXIVIANT</text>
+          <line x1="790" y1="140" x2="790" y2="300" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)" stroke-dasharray="4 4" />
+        </g>
+
+        <!-- Uranium Ore External Label -->
+        <g class="hover-group" onclick="handleLabelClick('ore')">
+          <text x="500" y="500" class="svg-label" text-anchor="middle" fill="#f8fafc">URANIUM ORE</text>
+          <line x1="500" y1="480" x2="500" y2="400" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)" stroke-dasharray="4 4" />
+        </g>
+
+
+        <!-- Containers -->
+        
+        <!-- Tank 1: Barren Lixiviant -->
+        <g id="tank-barren" class="hover-group" onclick="handleLabelClick('barren')">
+          <rect id="barren-liquid" class="liquid green-liquid" x="50" y="250" width="220" height="250" rx="5" fill="url(#barren-fluid)" />
+          <path d="M 50 150 L 50 500 C 50 510, 60 520, 70 520 L 250 520 C 260 520, 270 510, 270 500 L 270 150" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="4" />
+          <path d="M 40 150 L 280 150" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="6" stroke-linecap="round" />
+          
+          <!-- Small 18V Motor Pump -->
+          <g id="motor-pump" transform="translate(30, 0)">
+            <rect x="90" y="440" width="80" height="70" rx="8" fill="#1e293b" stroke="#94a3b8" stroke-width="2" />
+            <rect x="95" y="450" width="70" height="50" fill="#334155" />
+            <rect x="115" y="420" width="30" height="20" rx="2" fill="#64748b" />
+            <polygon points="110,430 150,430 145,420 115,420" fill="#475569" />
+            <text x="130" y="475" fill="#fbbf24" font-size="16" font-weight="bold" font-family="monospace" text-anchor="middle">18V</text>
+            <text x="130" y="490" fill="#94a3b8" font-size="10" font-weight="bold" font-family="monospace" text-anchor="middle">MOTOR</text>
+            <path d="M 90 475 L 70 475" fill="none" stroke="#64748b" stroke-width="12" stroke-linecap="round" />
+            <circle cx="65" cy="475" r="8" fill="#475569" />
+          </g>
+        </g>
+
+        <!-- Central Box: Horizontal Container with Irregular Rocks -->
+        <g id="earth-section" class="hover-group">
+          <!-- Main Box background -->
+          <rect x="350" y="300" width="300" height="150" fill="url(#irregular-rocks)" stroke="#cbd5e1" stroke-width="3" />
+          
+          <rect id="ore-color-fill" x="350" y="300" width="300" height="150" fill="#fbbf24" style="mix-blend-mode: multiply; opacity: 0;" />
+
+          <!-- Overburden (Lid) -->
+          <g class="overburden-rect" onclick="handleLabelClick('overburden')">
+            <rect x="340" y="290" width="320" height="10" fill="#475569" stroke="#334155" stroke-width="2" rx="2" />
+            <!-- Bolts/Clamps -->
+            <rect x="360" y="285" width="15" height="15" fill="#94a3b8" rx="2" />
+            <rect x="420" y="285" width="15" height="15" fill="#94a3b8" rx="2" />
+            <rect x="560" y="285" width="15" height="15" fill="#94a3b8" rx="2" />
+            <rect x="620" y="285" width="15" height="15" fill="#94a3b8" rx="2" />
+            <text x="500" y="282" fill="#cbd5e1" font-size="12" font-weight="bold" font-family="monospace" text-anchor="middle">CONTAINER LID</text>
+          </g>
+
+          <rect class="ore-click-area" onclick="handleLabelClick('ore')" x="350" y="300" width="300" height="150" fill="transparent" />
+          
+          <path id="ore-dash-overlay" class="continuous-flow flow-internal flow-green" d="M 430 300 C 430 430, 460 430, 500 430 C 540 430, 570 430, 570 300" fill="none" stroke="#22c55e" stroke-width="12" stroke-dasharray="10 20" filter="url(#glow-green)" opacity="0.6"/>
+          <g id="particles-container"></g>
+        </g>
+
+        <!-- Wells Labels (Hotspots) -->
+        <g id="well-injection" class="hover-group" onclick="handleLabelClick('injection')">
+          <rect x="395" y="120" width="70" height="30" rx="5" fill="#1e293b" opacity="0.8" />
+          <text x="430" y="135" class="svg-label-small" text-anchor="middle" dominant-baseline="middle">INJECTION</text>
+          <text x="430" y="150" class="svg-label-small" text-anchor="middle" dominant-baseline="middle">WELL</text>
+        </g>
+
+        <g id="well-production" class="hover-group" onclick="handleLabelClick('production')">
+          <rect x="535" y="120" width="70" height="30" rx="5" fill="#1e293b" opacity="0.8" />
+          <text x="570" y="135" class="svg-label-small" text-anchor="middle" dominant-baseline="middle">PRODUCTION</text>
+          <text x="570" y="150" class="svg-label-small" text-anchor="middle" dominant-baseline="middle">WELL</text>
+        </g>
+
+        <!-- Tank 2: Pregnant Lixiviant -->
+        <g id="tank-pregnant" class="hover-group" onclick="handleLabelClick('pregnant')">
+          <rect id="pregnant-liquid" class="liquid orange-liquid" x="730" y="500" width="220" height="0" rx="5" fill="url(#pregnant-fluid)" />
+          <path d="M 730 150 L 730 500 C 730 510, 740 520, 750 520 L 930 520 C 940 520, 950 510, 950 500 L 950 150" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="4" />
+          <path d="M 720 150 L 960 150" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="6" stroke-linecap="round" />
+        </g>
+
+      </svg>
+    </div>
+
+    <!-- UI Overlay Controls -->
+    <div class="controls-panel">
+      <button id="btn-play-pause" class="btn primary">Start Process</button>
+      <button id="btn-restart" class="btn secondary">Restart</button>
+    </div>
+  </main>
+
+  <!-- Modal Overlay -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal-content">
+      <button class="close-btn" id="btn-close-modal">&times;</button>
+      <div class="modal-header">
+        <div class="modal-icon" id="modal-icon"></div>
+        <h2 id="modal-title">Placeholder Title</h2>
+      </div>
+      <div class="modal-body">
+        <p id="modal-desc" class="typewriter"></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
