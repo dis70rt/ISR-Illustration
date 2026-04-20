@@ -1,0 +1,120 @@
+.hover-group {
+  cursor: pointer;
+  transition: opacity 0.2s ease, filter 0.2s ease;
+}
+.hover-group:hover, .ore-click-area:hover, .overburden-rect:hover {
+  filter: brightness(1.2);
+}
+.ore-click-area, .overburden-rect {
+  cursor: pointer;
+}
+.controls-panel {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding: 1rem;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  z-index: 10;
+}
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 999px;
+  border: none;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: white;
+  min-width: 140px;
+}
+.btn.primary {
+  background: var(--primary);
+  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.5);
+}
+.btn.primary:hover:not(:disabled) {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+}
+.btn.secondary {
+  background: var(--secondary);
+}
+.btn.secondary:hover {
+  background: var(--secondary-hover);
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 100;
+}
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+.modal-content {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  border-radius: 16px;
+  padding: 2.5rem;
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+  transform: scale(0.95) translateY(20px);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.modal-overlay.active .modal-content {
+  transform: scale(1) translateY(0);
+}
+.close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.close-btn:hover {
+  color: white;
+}
+.modal-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.modal-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: var(--primary);
+}
+.modal-header h2 {
+  font-size: 1.5rem;
+  color: white;
+}
+.modal-body {
+  color: var(--text-dark);
+  line-height: 1.6;
+  font-size: 1.1rem;
+  min-height: 100px;
+}
