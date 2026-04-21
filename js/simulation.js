@@ -1,78 +1,119 @@
-import { elements, delay } from './ui.js';
+import { elements } from './ui.js';
+
+let masterDemoTL = null;
+let flowTweens = [];
+
 export let state = {
   isRunning: false,
   sequenceFinished: false
 };
-export async function runSequence() {
+
+function buildDemoTimeline() {
+  if (masterDemoTL) {
+    masterDemoTL.kill();
+  }
+  flowTweens.forEach(t => t.kill());
+  flowTweens = [];
+
+  masterDemoTL = gsap.timeline({
+    paused: true,
+    onComplete: () => {
+      state.sequenceFinished = true;
+      elements.btnPlayPause.disabled = false;
+      elements.btnPlayPause.textContent = 'Process Complete';
+      elements.btnPlayPause.style.background = '#10b981';
+      elements.btnPlayPause.disabled = true; // Block playback once finished
+    }
+  });
+
+  // Step 1: Green fill and barren liquid
+  masterDemoTL.to('#green-fill-overlay', { strokeDashoffset: 0, duration: 4, ease: 'none' }, 0);
+  masterDemoTL.to('#barren-liquid', { attr: { y: 380, height: 120 }, duration: 4, ease: 'power2.inOut' }, 0);
+  
+  // Step 2: Ore interaction
+  masterDemoTL.to('#ore-color-fill', { opacity: 0.85, duration: 1, ease: 'power2.inOut' }, 4);
+  
+  // Step 3: Orange fill
+  masterDemoTL.to('#orange-fill-overlay', { strokeDashoffset: 0, duration: 1, ease: 'none' }, 5);
+  
+  // Step 4: Pregnant liquid filling
+  masterDemoTL.to('#pregnant-liquid', { attr: { y: 350, height: 150 }, duration: 4, ease: 'power2.inOut' }, 6);
+  
+  // Step 5: Continuous flow loop starts
+  masterDemoTL.add(() => {
+    // This callback is triggered when we surpass time=10s
+    // If not seeking backwards:
+    gsap.to('.continuous-flow', { opacity: 1, duration: 0.5 });
+    
+    // Green flow 
+    flowTweens.push(
+      gsap.to('.flow-green', { strokeDashoffset: '-=40', duration: 3, ease: 'none', repeat: -1 })
+    );
+    // Orange flow
+    flowTweens.push(
+      gsap.to('.flow-orange', { strokeDashoffset: '-=40', duration: 3.6, ease: 'none', repeat: -1 })
+    );
+  }, 10);
+
+  return masterDemoTL;
+}
+
+export function runSequence() {
   if (state.isRunning) return;
   state.isRunning = true;
   
   if (!state.sequenceFinished) {
-    elements.btnPlayPause.disabled = true;
-    elements.btnPlayPause.textContent = 'Sequencing...';
-    elements.greenFillOverlay.classList.add('pipe-filling');
-    elements.barrenLiquid.setAttribute('y', '380');
-    elements.barrenLiquid.setAttribute('height', '120');
-    await delay(4000);
-    elements.oreColorFill.classList.add('active');
-    await delay(1000);
-    elements.orangeFillOverlay.classList.add('pipe-filling-fast');
-    await delay(1000);
-    elements.pregnantLiquid.setAttribute('y', '350');
-    elements.pregnantLiquid.setAttribute('height', '150');
-    await delay(4000);
-    elements.continuousFlows.forEach(el => el.classList.add('active'));
-    state.sequenceFinished = true;
+    elements.btnPlayPause.textContent = 'Pause Flow';
+    
+    if (!masterDemoTL) {
+      buildDemoTimeline();
+    }
+    masterDemoTL.play();
+    flowTweens.forEach(t => t.play());
   }
-  elements.btnPlayPause.disabled = false;
-  elements.btnPlayPause.textContent = 'Pause Flow';
-  elements.svgContainer.classList.remove('paused');
 }
+
 export function pauseSequence() {
-  if (state.sequenceFinished) {
+  if (!state.sequenceFinished) {
     state.isRunning = false;
-    elements.svgContainer.classList.add('paused');
+    if (masterDemoTL) masterDemoTL.pause();
+    flowTweens.forEach(t => t.pause());
     elements.btnPlayPause.textContent = 'Resume Flow';
     elements.btnPlayPause.style.background = '#64748b';
   }
 }
+
 export function resumeSequence() {
-  if (state.sequenceFinished) {
+  if (!state.sequenceFinished) {
     state.isRunning = true;
-    elements.svgContainer.classList.remove('paused');
+    if (masterDemoTL) masterDemoTL.play();
+    flowTweens.forEach(t => t.play());
     elements.btnPlayPause.textContent = 'Pause Flow';
     elements.btnPlayPause.style.background = 'var(--primary)';
-  } else {
-    runSequence();
   }
 }
+
 export function resetSimulation() {
   state.isRunning = false;
   state.sequenceFinished = false;
   
+  if (masterDemoTL) {
+    masterDemoTL.pause(0); // Reset playhead to the beginning
+    masterDemoTL.kill();
+    masterDemoTL = null;
+  }
+  flowTweens.forEach(t => t.kill());
+  flowTweens = [];
+  
   elements.btnPlayPause.disabled = false;
   elements.btnPlayPause.textContent = 'Start Process';
   elements.btnPlayPause.style.background = 'var(--primary)';
-  elements.greenFillOverlay.classList.remove('pipe-filling');
-  elements.orangeFillOverlay.classList.remove('pipe-filling-fast', 'pipe-filling');
   
-  elements.barrenLiquid.style.transition = 'none';
-  elements.pregnantLiquid.style.transition = 'none';
-  
-  elements.barrenLiquid.setAttribute('y', '250');
-  elements.barrenLiquid.setAttribute('height', '250');
-  
-  elements.pregnantLiquid.setAttribute('y', '500');
-  elements.pregnantLiquid.setAttribute('height', '0');
-  
-  elements.barrenLiquid.offsetHeight; 
-  
-  elements.barrenLiquid.style.transition = '';
-  elements.pregnantLiquid.style.transition = '';
-  
-  elements.oreColorFill.classList.remove('active');
-  elements.oreColorFill.style.opacity = '';
-  
-  elements.continuousFlows.forEach(el => el.classList.remove('active'));
-  elements.svgContainer.classList.remove('paused');
+  // Reset elements to initial states using GSAP
+  gsap.set('#green-fill-overlay', { strokeDashoffset: 1000 });
+  gsap.set('#orange-fill-overlay', { strokeDashoffset: 1000 });
+  gsap.set('#barren-liquid', { attr: { y: 250, height: 250 } });
+  gsap.set('#pregnant-liquid', { attr: { y: 500, height: 0 } });
+  gsap.set('#ore-color-fill', { opacity: 0 });
+  gsap.set('.continuous-flow', { opacity: 0 });
 }

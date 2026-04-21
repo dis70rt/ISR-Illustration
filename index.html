@@ -117,10 +117,323 @@
           <path d="M 720 150 L 960 150" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="6" stroke-linecap="round" />
         </g>
       </svg>
+      <svg id="production-diagram" viewBox="0 0 1000 620" preserveAspectRatio="xMidYMid meet" style="display: none;">
+        <defs>
+          <linearGradient id="prod-barren-fluid" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#60a5fa"/><stop offset="100%" stop-color="#3b82f6"/>
+          </linearGradient>
+          <linearGradient id="prod-pregnant-fluid" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#4ade80"/><stop offset="100%" stop-color="#16a34a"/>
+          </linearGradient>
+          <linearGradient id="prod-tank-body" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#90A4AE"/><stop offset="30%" stop-color="#CFD8DC"/>
+            <stop offset="70%" stop-color="#CFD8DC"/><stop offset="100%" stop-color="#90A4AE"/>
+          </linearGradient>
+          <linearGradient id="prod-tank-body-green" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#66BB6A"/><stop offset="30%" stop-color="#A5D6A7"/>
+            <stop offset="70%" stop-color="#A5D6A7"/><stop offset="100%" stop-color="#66BB6A"/>
+          </linearGradient>
+          <filter id="prod-glow-blue" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="4" result="blur"/><feComposite in="SourceGraphic" in2="blur" operator="over"/>
+          </filter>
+          <filter id="prod-glow-green" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="4" result="blur"/><feComposite in="SourceGraphic" in2="blur" operator="over"/>
+          </filter>
+          <filter id="prod-glow-cyan" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="3" result="blur"/><feComposite in="SourceGraphic" in2="blur" operator="over"/>
+          </filter>
+          <filter id="prod-shadow" x="-10%" y="-10%" width="120%" height="130%">
+            <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.25"/>
+          </filter>
+          <!-- Geological Patterns -->
+          <pattern id="prod-overburden" width="60" height="60" patternUnits="userSpaceOnUse">
+            <rect width="60" height="60" fill="#8B7355"/>
+            <path d="M5 15 Q15 5 25 12 T45 8" stroke="#6B563F" fill="none" stroke-width="1.5" opacity="0.5"/>
+            <circle cx="12" cy="40" r="4" fill="#6B563F" opacity="0.3"/><circle cx="48" cy="28" r="3" fill="#7A6548" opacity="0.3"/>
+            <path d="M30 50 Q40 42 55 48" stroke="#6B563F" fill="none" stroke-width="1" opacity="0.4"/>
+          </pattern>
+          <pattern id="prod-shale" width="40" height="12" patternUnits="userSpaceOnUse">
+            <rect width="40" height="12" fill="#5C6B7A"/>
+            <line x1="0" y1="4" x2="18" y2="4" stroke="#4A5568" stroke-width="2" opacity="0.6"/>
+            <line x1="22" y1="9" x2="40" y2="9" stroke="#4A5568" stroke-width="1.5" opacity="0.5"/>
+          </pattern>
+          <pattern id="prod-sandstone" width="50" height="50" patternUnits="userSpaceOnUse">
+            <rect width="50" height="50" fill="#D4C5A0"/>
+            <circle cx="8" cy="8" r="1.5" fill="#B8A87A" opacity="0.5"/><circle cx="25" cy="15" r="1" fill="#C4B48E" opacity="0.4"/>
+            <circle cx="42" cy="8" r="1.2" fill="#B8A87A" opacity="0.5"/><circle cx="15" cy="35" r="1" fill="#C4B48E" opacity="0.4"/>
+            <circle cx="38" cy="42" r="1.5" fill="#B8A87A" opacity="0.3"/><circle cx="5" cy="48" r="1" fill="#C4B48E" opacity="0.5"/>
+          </pattern>
+          <marker id="prod-arrow-blue" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#3b82f6"/>
+          </marker>
+          <marker id="prod-arrow-green" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#16a34a"/>
+          </marker>
+          <marker id="prod-arrow-cyan" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#67e8f9"/>
+          </marker>
+          <marker id="prod-arrow-gray" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#78909C"/>
+          </marker>
+        </defs>
+
+        <!-- ═══════════════════════ GEOLOGICAL LAYERS ═══════════════════════ -->
+        <!-- Sky / Surface -->
+        <rect x="0" y="0" width="1000" height="210" fill="#EAE6DB"/>
+        <!-- Ground line -->
+        <line x1="0" y1="210" x2="1000" y2="210" stroke="#5C4827" stroke-width="3"/>
+        <!-- Overburden (clickable) -->
+        <rect x="0" y="210" width="1000" height="70" fill="url(#prod-overburden)" class="hover-group" onclick="handleLabelClick('prod-overburden')"/>
+        <!-- Upper Confining (Shale) -->
+        <rect x="0" y="280" width="1000" height="55" fill="url(#prod-shale)"/>
+        <!-- Ore Body Aquifer (clickable) -->
+        <rect x="0" y="335" width="1000" height="170" fill="url(#prod-sandstone)" class="hover-group" onclick="handleLabelClick('prod-aquifer')"/>
+        <!-- Lower Confining (Shale) -->
+        <rect x="0" y="505" width="1000" height="115" fill="url(#prod-shale)"/>
+
+        <!-- Layer Labels — right-aligned, vertically centered in each band -->
+        <text x="985" y="250" text-anchor="end" font-size="11" font-family="Inter,sans-serif" font-weight="700" fill="#FFF8E1" opacity="0.9">Overburden (Dirt/Rock)</text>
+        <text x="985" y="312" text-anchor="end" font-size="11" font-family="Inter,sans-serif" font-weight="700" fill="#CBD5E1">Upper Confining Layer (Impermeable)</text>
+        <text x="985" y="425" text-anchor="end" font-size="11" font-family="Inter,sans-serif" font-weight="700" fill="#78716C">Ore Body Aquifer (Porous Sandstone)</text>
+        <text x="985" y="565" text-anchor="end" font-size="11" font-family="Inter,sans-serif" font-weight="700" fill="#CBD5E1">Lower Confining Layer (Impermeable)</text>
+
+        <!-- Side labels -->
+        <text x="8" y="120" font-size="13" font-family="Inter,sans-serif" font-weight="800" fill="#475569" writing-mode="tb" text-anchor="middle">Surface Plant</text>
+        <text x="8" y="400" font-size="13" font-family="Inter,sans-serif" font-weight="800" fill="#94A3B8" writing-mode="tb" text-anchor="middle">Subsurface</text>
+
+        <!-- ═══════════ TARGET MINERAL ZONE (animated) ═══════════ -->
+        <g id="prod-mineral-zone" opacity="0" class="hover-group" onclick="handleLabelClick('prod-ore')">
+          <ellipse cx="580" cy="420" rx="170" ry="65" fill="#16a34a" opacity="0.2"/>
+          <ellipse cx="580" cy="420" rx="130" ry="45" fill="#22c55e" opacity="0.25"/>
+          <!-- mineral deposit dots -->
+          <circle cx="510" cy="410" r="4" fill="#15803d" opacity="0.7"/>
+          <circle cx="550" cy="395" r="3" fill="#166534" opacity="0.6"/>
+          <circle cx="590" cy="430" r="5" fill="#15803d" opacity="0.5"/>
+          <circle cx="630" cy="405" r="3.5" fill="#166534" opacity="0.7"/>
+          <circle cx="660" cy="435" r="4" fill="#15803d" opacity="0.6"/>
+          <circle cx="530" cy="440" r="3" fill="#166534" opacity="0.5"/>
+          <circle cx="610" cy="445" r="3.5" fill="#15803d" opacity="0.6"/>
+          <circle cx="680" cy="415" r="3" fill="#166534" opacity="0.4"/>
+          <text x="580" y="418" text-anchor="middle" font-size="13" font-family="Inter,sans-serif" font-weight="800" fill="#166534" opacity="0.9">Target Mineral</text>
+          <text x="580" y="433" text-anchor="middle" font-size="9" font-family="Inter,sans-serif" font-weight="600" fill="#1B5E20" opacity="0.7">(Uranium Ore Body)</text>
+        </g>
+
+        <!-- ═══════════ ORE PLUME (Cone of Depression) ═══════════ -->
+        <path id="prod-ore-plume" d="M 380 500 C 380 380, 490 350, 530 350 C 580 350, 640 380, 640 500 Z" fill="url(#prod-pregnant-fluid)" opacity="0"/>
+
+        <!-- ═══════════ WELL CASINGS ═══════════ -->
+        <!-- Injection Well Casing (clickable) -->
+        <g id="prod-inj-casing" opacity="0" class="hover-group" onclick="handleLabelClick('prod-injection')">
+          <rect x="345" y="210" width="22" height="295" fill="url(#prod-tank-body)" stroke="#78909C" stroke-width="1.5" rx="1"/>
+          <!-- well head at surface -->
+          <rect x="340" y="205" width="32" height="10" fill="#607D8B" stroke="#455A64" stroke-width="1.5" rx="2"/>
+        </g>
+        <!-- Recovery Well Casing (clickable) -->
+        <g id="prod-rec-casing" opacity="0" class="hover-group" onclick="handleLabelClick('prod-recovery')">
+          <rect x="733" y="210" width="22" height="295" fill="url(#prod-tank-body)" stroke="#78909C" stroke-width="1.5" rx="1"/>
+          <!-- well head at surface -->
+          <rect x="728" y="205" width="32" height="10" fill="#607D8B" stroke="#455A64" stroke-width="1.5" rx="2"/>
+        </g>
+
+        <!-- Well Labels (below ground) — dark pill for legibility -->
+        <g id="prod-inj-label" opacity="0">
+          <rect x="335" y="340" width="42" height="80" rx="4" fill="rgba(30,41,59,0.7)"/>
+          <text x="356" y="390" text-anchor="middle" font-size="11" font-family="Inter,sans-serif" font-weight="800" fill="#60a5fa" transform="rotate(-90 356 380)">Injection Well</text>
+        </g>
+        <g id="prod-rec-label" opacity="0">
+          <rect x="723" y="340" width="42" height="80" rx="4" fill="rgba(30,41,59,0.7)"/>
+          <text x="744" y="390" text-anchor="middle" font-size="11" font-family="Inter,sans-serif" font-weight="800" fill="#4ade80" transform="rotate(-90 744 380)">Recovery Well</text>
+        </g>
+
+        <!-- ═══════ SURFACE PLANT EQUIPMENT ═══════ -->
+        <!-- Ground platforms -->
+        <rect x="20" y="205" width="310" height="5" fill="#5C4827" rx="1"/>
+        <rect x="720" y="205" width="270" height="5" fill="#5C4827" rx="1"/>
+
+        <!-- ═══ BARREN LIXIVIANT TANK (clickable, properly drawn) ═══ -->
+        <g id="prod-tanks" opacity="0" class="hover-group" onclick="handleLabelClick('prod-barren-tank')" filter="url(#prod-shadow)">
+          <!-- Tank 1: Acid/Oxidant -->
+          <rect x="30" y="130" width="50" height="75" fill="url(#prod-tank-body)" stroke="#78909C" stroke-width="1.5" rx="3"/>
+          <ellipse cx="55" cy="130" rx="25" ry="7" fill="#E0E0E0" stroke="#78909C" stroke-width="1"/>
+          <rect x="33" y="175" width="44" height="28" fill="url(#prod-barren-fluid)" rx="2" opacity="0.6"/>
+          <text x="55" y="193" text-anchor="middle" font-size="6.5" font-family="Inter,sans-serif" font-weight="700" fill="#FFF">ACID</text>
+
+          <!-- Tank 2: Water/Oxidant -->
+          <rect x="90" y="130" width="50" height="75" fill="url(#prod-tank-body)" stroke="#78909C" stroke-width="1.5" rx="3"/>
+          <ellipse cx="115" cy="130" rx="25" ry="7" fill="#E0E0E0" stroke="#78909C" stroke-width="1"/>
+          <rect x="93" y="160" width="44" height="43" fill="url(#prod-barren-fluid)" rx="2" opacity="0.45"/>
+          <text x="115" y="186" text-anchor="middle" font-size="6.5" font-family="Inter,sans-serif" font-weight="700" fill="#FFF">H₂O</text>
+
+          <!-- Tank Label above -->
+          <rect x="25" y="108" width="120" height="16" rx="3" fill="rgba(30,41,59,0.7)"/>
+          <text x="85" y="120" text-anchor="middle" font-size="10" font-family="Inter,sans-serif" font-weight="800" fill="#93c5fd">Lixiviant Tanks</text>
+
+          <!-- Connecting pipe between tanks (at bottom) -->
+          <line x1="80" y1="195" x2="90" y2="195" stroke="#78909C" stroke-width="4" stroke-linecap="round"/>
+        </g>
+
+        <!-- ═══ INJECTION PUMP (clickable) ═══ -->
+        <g id="prod-pumps" opacity="0" class="hover-group" onclick="handleLabelClick('prod-pump')" filter="url(#prod-shadow)">
+          <rect x="158" y="162" width="38" height="42" fill="#455A64" stroke="#37474F" stroke-width="1.5" rx="5"/>
+          <!-- Pump motor detail -->
+          <rect x="163" y="168" width="28" height="12" fill="#546E7A" rx="2"/>
+          <circle cx="177" cy="174" r="4" fill="#78909C" stroke="#B0BEC5" stroke-width="1"/>
+          <text x="177" y="198" text-anchor="middle" font-size="7" font-family="Inter,sans-serif" font-weight="800" fill="#ECEFF1">PUMP</text>
+          <!-- Label -->
+          <text x="177" y="155" text-anchor="middle" font-size="8" font-family="Inter,sans-serif" font-weight="700" fill="#455A64">Injection</text>
+
+          <!-- Pipe: Tank outlet → Pump inlet (attached) -->
+          <path d="M 140 195 L 152 195 L 152 183 L 158 183" fill="none" stroke="#90CAF9" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Pipe: Pump outlet → Mixer inlet (attached) -->
+          <path d="M 196 183 L 215 183" fill="none" stroke="#90CAF9" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+
+        <!-- ═══ MIXER (clickable) ═══ -->
+        <g id="prod-mixer" opacity="0" class="hover-group" onclick="handleLabelClick('prod-mixer-info')" filter="url(#prod-shadow)">
+          <!-- Funnel/hopper shape -->
+          <polygon points="215,138 275,138 268,200 222,200" fill="#B0BEC5" stroke="#78909C" stroke-width="1.5"/>
+          <!-- Agitator shaft -->
+          <rect x="242" y="118" width="6" height="85" fill="#607D8B" rx="1"/>
+          <!-- Agitator blades -->
+          <line x1="235" y1="155" x2="255" y2="155" stroke="#455A64" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="233" y1="172" x2="257" y2="172" stroke="#455A64" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- Motor on top -->
+          <rect x="238" y="108" width="14" height="14" fill="#455A64" stroke="#37474F" stroke-width="1" rx="2"/>
+          <!-- Label -->
+          <text x="245" y="102" text-anchor="middle" font-size="10" font-family="Inter,sans-serif" font-weight="800" fill="#37474F">Mixer</text>
+          <!-- Water + Chemicals inlet labels -->
+          <text x="224" y="82" text-anchor="middle" font-size="7.5" font-family="Inter,sans-serif" font-weight="600" fill="#546E7A">Water</text>
+          <line x1="224" y1="85" x2="224" y2="108" stroke="#90A4AE" stroke-width="1.5" marker-end="url(#prod-arrow-gray)"/>
+          <text x="265" y="82" text-anchor="middle" font-size="7.5" font-family="Inter,sans-serif" font-weight="600" fill="#546E7A">Oxidant</text>
+          <line x1="265" y1="85" x2="255" y2="108" stroke="#90A4AE" stroke-width="1.5" marker-end="url(#prod-arrow-gray)"/>
+
+          <!-- Pipe: Mixer outlet → down to well (attached at bottom center) -->
+          <path d="M 245 200 L 245 208" fill="none" stroke="#64B5F6" stroke-width="5" stroke-linecap="round"/>
+        </g>
+
+        <!-- ═══ PROCESSING FACILITY (clickable) ═══ -->
+        <g id="prod-facility" opacity="0" class="hover-group" onclick="handleLabelClick('prod-facility-info')" filter="url(#prod-shadow)">
+          <!-- Main building -->
+          <rect x="770" y="95" width="210" height="108" fill="#CFD8DC" stroke="#90A4AE" stroke-width="2" rx="4"/>
+          <!-- Title -->
+          <text x="875" y="88" text-anchor="middle" font-size="11" font-family="Inter,sans-serif" font-weight="800" fill="#37474F">Processing Facility</text>
+          <!-- Ion Exchange box -->
+          <rect x="778" y="102" width="194" height="40" fill="#F5F5F5" stroke="#B0BEC5" stroke-width="1.5" rx="3"/>
+          <text x="875" y="127" text-anchor="middle" font-size="11" font-family="Inter,sans-serif" font-weight="700" fill="#37474F">Ion Exchange</text>
+          <!-- Solvent Extraction box -->
+          <rect x="778" y="152" width="194" height="40" fill="#F5F5F5" stroke="#B0BEC5" stroke-width="1.5" rx="3"/>
+          <text x="875" y="177" text-anchor="middle" font-size="11" font-family="Inter,sans-serif" font-weight="700" fill="#37474F">Solvent Extraction</text>
+          <!-- Internal connector -->
+          <line x1="875" y1="142" x2="875" y2="152" stroke="#78909C" stroke-width="3"/>
+          <!-- Yellowcake output -->
+          <rect x="920" y="192" width="58" height="14" rx="2" fill="rgba(46,125,50,0.15)"/>
+          <text x="949" y="202" text-anchor="middle" font-size="7" font-family="Inter,sans-serif" font-weight="700" fill="#2E7D32">Yellowcake →</text>
+          <text x="949" y="212" text-anchor="middle" font-size="6.5" font-family="Inter,sans-serif" font-weight="600" fill="#388E3C">(U₃O₈)</text>
+        </g>
+
+        <!-- ═══════════ STATIC PIPES (always shown, ghosted until animated) ═══════════ -->
+        <!-- Step 1: Tank→Pump→Mixer surface pipes (now inside animated groups above) -->
+        <path id="prod-pipe-prep" d="M 140 195 L 158 195" fill="none" stroke="#90CAF9" stroke-width="5" opacity="0"/>
+        <path id="prod-pipe-mix" d="M 196 183 L 215 183" fill="none" stroke="#90CAF9" stroke-width="5" opacity="0"/>
+
+        <!-- Step 2: Mixer → Injection Well (down through ground) -->
+        <path id="prod-pipe-inject-base" d="M 245 208 L 356 208 L 356 500" fill="none" stroke="#64B5F6" stroke-width="8" opacity="0"/>
+        <!-- Step 3: Aquifer flow (lateral across ore body) -->
+        <path id="prod-pipe-aquifer-base" d="M 370 420 Q 550 465 744 420" fill="none" stroke="#81C784" stroke-width="8" opacity="0"/>
+        <!-- Step 4: Recovery Well → surface -->
+        <path id="prod-pipe-recover-base" d="M 744 420 L 744 208 L 770 150" fill="none" stroke="#66BB6A" stroke-width="8" opacity="0"/>
+        <!-- Step 5: Return line (Facility → Mixer) -->
+        <path id="prod-pipe-return-base" d="M 770 105 L 290 105 L 290 138 L 275 138" fill="none" stroke="#90CAF9" stroke-width="5" opacity="0" stroke-dasharray="8 6"/>
+
+        <!-- ═══════════ ANIMATED OVERLAY PATHS ═══════════ -->
+        <path id="prod-fill-inject" d="M 245 208 L 356 208 L 356 500" fill="none" stroke="#2563eb" stroke-width="8" stroke-dasharray="1200" stroke-dashoffset="1200" filter="url(#prod-glow-blue)"/>
+        <path id="prod-fill-aquifer" d="M 370 420 Q 550 465 744 420" fill="none" stroke="#16a34a" stroke-width="8" stroke-dasharray="800" stroke-dashoffset="800" filter="url(#prod-glow-green)"/>
+        <path id="prod-fill-recover" d="M 744 420 L 744 208 L 770 150" fill="none" stroke="#16a34a" stroke-width="8" stroke-dasharray="800" stroke-dashoffset="800" filter="url(#prod-glow-green)"/>
+        <path id="prod-fill-return" d="M 770 105 L 290 105 L 290 138 L 275 138" fill="none" stroke="#3b82f6" stroke-width="4" stroke-dasharray="800" stroke-dashoffset="800" filter="url(#prod-glow-cyan)"/>
+
+        <!-- ═══════════ CONTINUOUS DASHED FLOW LINES ═══════════ -->
+        <path id="prod-dash-inject" d="M 245 208 L 356 208 L 356 500" fill="none" stroke="#60a5fa" stroke-width="5" stroke-dasharray="10 16" opacity="0"/>
+        <path id="prod-dash-aquifer" d="M 370 420 Q 550 465 744 420" fill="none" stroke="#4ade80" stroke-width="5" stroke-dasharray="10 16" opacity="0"/>
+        <path id="prod-dash-recover" d="M 744 420 L 744 208 L 770 150" fill="none" stroke="#22c55e" stroke-width="5" stroke-dasharray="10 16" opacity="0"/>
+        <path id="prod-dash-return" d="M 770 105 L 290 105 L 290 138 L 275 138" fill="none" stroke="#60a5fa" stroke-width="3" stroke-dasharray="8 12" opacity="0"/>
+
+        <!-- Lixiviant flow arrows in aquifer -->
+        <g id="prod-aquifer-arrows" opacity="0">
+          <line x1="395" y1="400" x2="440" y2="412" stroke="#2196F3" stroke-width="2" marker-end="url(#prod-arrow-blue)"/>
+          <line x1="395" y1="442" x2="440" y2="446" stroke="#2196F3" stroke-width="2" marker-end="url(#prod-arrow-blue)"/>
+          <rect x="442" y="380" width="62" height="14" rx="3" fill="rgba(30,41,59,0.6)"/>
+          <text x="473" y="390" text-anchor="middle" font-size="8" font-family="Inter,sans-serif" font-weight="700" fill="#90CAF9">Lixiviant →</text>
+          <rect x="530" y="376" width="68" height="28" rx="3" fill="rgba(30,41,59,0.6)"/>
+          <text x="564" y="389" text-anchor="middle" font-size="8" font-family="Inter,sans-serif" font-weight="700" fill="#81C784">Cone of</text>
+          <text x="564" y="399" text-anchor="middle" font-size="8" font-family="Inter,sans-serif" font-weight="700" fill="#81C784">Depression</text>
+          <text x="490" y="420" font-size="7.5" font-family="Inter,sans-serif" font-weight="600" fill="#2E7D32">Dissolves U minerals</text>
+        </g>
+
+        <!-- PLS label -->
+        <g id="prod-pls-label" opacity="0">
+          <rect x="685" y="228" width="60" height="40" rx="4" fill="rgba(30,41,59,0.8)"/>
+          <text x="715" y="243" text-anchor="middle" font-size="7" font-family="Inter,sans-serif" font-weight="600" fill="#A5D6A7">Pregnant Leach</text>
+          <text x="715" y="253" text-anchor="middle" font-size="7" font-family="Inter,sans-serif" font-weight="600" fill="#A5D6A7">Solution</text>
+          <text x="715" y="265" text-anchor="middle" font-size="11" font-family="Inter,sans-serif" font-weight="800" fill="#4ade80">PLS ↑</text>
+        </g>
+
+        <!-- Barren Lixiviant return label -->
+        <g id="prod-barren-label" opacity="0">
+          <rect x="430" y="86" width="135" height="18" rx="3" fill="rgba(30,41,59,0.7)"/>
+          <text x="497" y="99" text-anchor="middle" font-size="9" font-family="Inter,sans-serif" font-weight="700" fill="#93c5fd">← Barren Lixiviant →</text>
+        </g>
+
+        <!-- ═══════════ STEP CALLOUT BOXES ═══════════ -->
+        <g id="prod-step1-box" opacity="0">
+          <rect x="55" y="52" width="225" height="28" rx="6" fill="#1565C0" opacity="0.92"/>
+          <text x="167" y="71" text-anchor="middle" font-size="12" font-family="Inter,sans-serif" font-weight="800" fill="#FFFFFF">Step 1: Preparation</text>
+        </g>
+        <g id="prod-step2-box" opacity="0">
+          <rect x="270" y="244" width="195" height="26" rx="6" fill="#1976D2" opacity="0.92"/>
+          <text x="367" y="262" text-anchor="middle" font-size="11" font-family="Inter,sans-serif" font-weight="800" fill="#FFFFFF">Step 2: Injection Well ↓</text>
+        </g>
+        <g id="prod-step3-box" opacity="0">
+          <rect x="415" y="478" width="235" height="26" rx="6" fill="#2E7D32" opacity="0.92"/>
+          <text x="532" y="496" text-anchor="middle" font-size="11" font-family="Inter,sans-serif" font-weight="800" fill="#FFFFFF">Step 3: Leaching Zone (PLS)</text>
+        </g>
+        <g id="prod-step4-box" opacity="0">
+          <rect x="630" y="244" width="185" height="26" rx="6" fill="#388E3C" opacity="0.92"/>
+          <text x="722" y="262" text-anchor="middle" font-size="11" font-family="Inter,sans-serif" font-weight="800" fill="#FFFFFF">Step 4: Recovery Well ↑</text>
+        </g>
+        <g id="prod-step5-box" opacity="0">
+          <rect x="755" y="52" width="225" height="28" rx="6" fill="#00695C" opacity="0.92"/>
+          <text x="867" y="71" text-anchor="middle" font-size="12" font-family="Inter,sans-serif" font-weight="800" fill="#FFFFFF">Step 5: Extract &amp; Recycle</text>
+        </g>
+      </svg>
+    </div>
+    <!-- NARRATION CARD (production mode only) -->
+    <div id="narration-card" class="narration-card" style="display:none;">
+      <div class="narration-step-indicator">
+        <span id="narration-step-num" class="step-badge">—</span>
+        <span id="narration-step-title" class="step-title">Ready</span>
+      </div>
+      <p id="narration-text" class="narration-text">Toggle to Production Mode, then press "Next Step" to begin the ISR walkthrough.</p>
     </div>
     <div class="controls-panel">
-      <button id="btn-play-pause" class="btn primary">Start Process</button>
-      <button id="btn-restart" class="btn secondary">Restart</button>
+      <div class="toggle-container">
+        <span class="mode-label" id="label-demo">Demo Mode</span>
+        <label class="switch">
+          <input type="checkbox" id="mode-toggle">
+          <span class="slider round"></span>
+        </label>
+        <span class="mode-label" id="label-prod">Production Mode</span>
+      </div>
+      <!-- Demo controls -->
+      <div id="demo-controls">
+        <button id="btn-play-pause" class="btn primary">Start Process</button>
+        <button id="btn-restart" class="btn secondary">Restart</button>
+      </div>
+      <!-- Production step controls -->
+      <div id="prod-controls" style="display:none;">
+        <button id="btn-prev-step" class="btn secondary" disabled>← Prev</button>
+        <button id="btn-next-step" class="btn primary">Next Step →</button>
+        <button id="btn-reset-prod" class="btn secondary">Reset</button>
+      </div>
     </div>
   </main>
   <div class="modal-overlay" id="modal">
@@ -135,6 +448,7 @@
       </div>
     </div>
   </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script type="module" src="js/main.js"></script>
 </body>
 </html>
