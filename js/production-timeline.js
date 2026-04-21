@@ -148,6 +148,9 @@ function buildTimeline() {
   // Mineral zone
   masterTL.to('#prod-mineral-zone', { opacity: 1, duration: 1.2, ease: 'power2.inOut' }, 'step3+=0.2');
 
+  // Monitoring well appears (environmental compliance)
+  masterTL.to('#prod-monitor-well', { opacity: 0.7, duration: 0.6 }, 'step3+=0.3');
+
   // Aquifer base pipe
   masterTL.to('#prod-pipe-aquifer-base', { opacity: 0.3, duration: 0.5 }, 'step3+=0.2');
 
@@ -227,6 +230,9 @@ function buildTimeline() {
 
   // Processing facility
   masterTL.to('#prod-facility', { opacity: 1, duration: 1.0, ease: 'power3.out' }, 'step5+=0.2');
+
+  // Yellowcake output drum appears shortly after facility
+  masterTL.to('#prod-yellowcake', { opacity: 1, duration: 0.8, ease: 'back.out(1.2)' }, 'step5+=0.8');
 
   // Return base pipe
   masterTL.to('#prod-pipe-return-base', { opacity: 0.3, duration: 0.5 }, 'step5+=0.5');
@@ -309,6 +315,7 @@ export function resetProduction() {
     '#prod-step1-box', '#prod-step2-box', '#prod-step3-box',
     '#prod-step4-box', '#prod-step5-box',
     '#prod-tanks', '#prod-pumps', '#prod-mixer', '#prod-facility',
+    '#prod-yellowcake', '#prod-monitor-well',
     '#prod-pipe-prep', '#prod-pipe-mix',
     '#prod-inj-casing', '#prod-rec-casing',
     '#prod-inj-label', '#prod-rec-label',

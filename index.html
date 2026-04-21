@@ -250,7 +250,7 @@
         <rect x="20" y="205" width="310" height="5" fill="#5C4827" rx="1"/>
         <rect x="720" y="205" width="270" height="5" fill="#5C4827" rx="1"/>
 
-        <!-- ═══ BARREN LIXIVIANT TANK (clickable, properly drawn) ═══ -->
+        <!-- ═══ BARREN LIXIVIANT TANKS (clickable) ═══ -->
         <g id="prod-tanks" opacity="0" class="hover-group" onclick="handleLabelClick('prod-barren-tank')" filter="url(#prod-shadow)">
           <!-- Tank 1: Acid/Oxidant -->
           <rect x="30" y="130" width="50" height="75" fill="url(#prod-tank-body)" stroke="#78909C" stroke-width="1.5" rx="3"/>
@@ -270,6 +270,8 @@
 
           <!-- Connecting pipe between tanks (at bottom) -->
           <line x1="80" y1="195" x2="90" y2="195" stroke="#78909C" stroke-width="4" stroke-linecap="round"/>
+          <!-- Tank outlet manifold (right side of Tank 2 bottom) -->
+          <path d="M 115 205 L 115 195 L 140 195" fill="none" stroke="#78909C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
         </g>
 
         <!-- ═══ INJECTION PUMP (clickable) ═══ -->
@@ -281,17 +283,22 @@
           <text x="177" y="198" text-anchor="middle" font-size="7" font-family="Inter,sans-serif" font-weight="800" fill="#ECEFF1">PUMP</text>
           <!-- Label -->
           <text x="177" y="155" text-anchor="middle" font-size="8" font-family="Inter,sans-serif" font-weight="700" fill="#455A64">Injection</text>
+          <!-- Pressure gauge indicator -->
+          <circle cx="188" cy="168" r="3" fill="none" stroke="#B0BEC5" stroke-width="0.8"/>
+          <line x1="188" y1="168" x2="190" y2="166" stroke="#EF5350" stroke-width="0.8"/>
 
-          <!-- Pipe: Tank outlet → Pump inlet (attached) -->
-          <path d="M 140 195 L 152 195 L 152 183 L 158 183" fill="none" stroke="#90CAF9" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-          <!-- Pipe: Pump outlet → Mixer inlet (attached) -->
-          <path d="M 196 183 L 215 183" fill="none" stroke="#90CAF9" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Pipe: Tank outlet → Pump inlet (attached to left face at mid-height) -->
+          <path d="M 140 195 L 150 195 L 150 183 L 158 183" fill="none" stroke="#90CAF9" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Pipe: Pump outlet → Mixer inlet (attached to right face, routes to mixer left wall) -->
+          <path d="M 196 183 L 206 183 L 206 170 L 215 170" fill="none" stroke="#90CAF9" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
         </g>
 
         <!-- ═══ MIXER (clickable) ═══ -->
         <g id="prod-mixer" opacity="0" class="hover-group" onclick="handleLabelClick('prod-mixer-info')" filter="url(#prod-shadow)">
           <!-- Funnel/hopper shape -->
           <polygon points="215,138 275,138 268,200 222,200" fill="#B0BEC5" stroke="#78909C" stroke-width="1.5"/>
+          <!-- Liquid level inside mixer -->
+          <polygon points="218,160 272,160 268,200 222,200" fill="url(#prod-barren-fluid)" opacity="0.3"/>
           <!-- Agitator shaft -->
           <rect x="242" y="118" width="6" height="85" fill="#607D8B" rx="1"/>
           <!-- Agitator blades -->
@@ -299,6 +306,10 @@
           <line x1="233" y1="172" x2="257" y2="172" stroke="#455A64" stroke-width="2.5" stroke-linecap="round"/>
           <!-- Motor on top -->
           <rect x="238" y="108" width="14" height="14" fill="#455A64" stroke="#37474F" stroke-width="1" rx="2"/>
+          <!-- Motor ventilation lines -->
+          <line x1="240" y1="113" x2="250" y2="113" stroke="#546E7A" stroke-width="0.8" opacity="0.6"/>
+          <line x1="240" y1="116" x2="250" y2="116" stroke="#546E7A" stroke-width="0.8" opacity="0.6"/>
+          <line x1="240" y1="119" x2="250" y2="119" stroke="#546E7A" stroke-width="0.8" opacity="0.6"/>
           <!-- Label -->
           <text x="245" y="102" text-anchor="middle" font-size="10" font-family="Inter,sans-serif" font-weight="800" fill="#37474F">Mixer</text>
           <!-- Water + Chemicals inlet labels -->
@@ -307,7 +318,7 @@
           <text x="265" y="82" text-anchor="middle" font-size="7.5" font-family="Inter,sans-serif" font-weight="600" fill="#546E7A">Oxidant</text>
           <line x1="265" y1="85" x2="255" y2="108" stroke="#90A4AE" stroke-width="1.5" marker-end="url(#prod-arrow-gray)"/>
 
-          <!-- Pipe: Mixer outlet → down to well (attached at bottom center) -->
+          <!-- Pipe: Mixer outlet → down to surface level (attached at bottom center) -->
           <path d="M 245 200 L 245 208" fill="none" stroke="#64B5F6" stroke-width="5" stroke-linecap="round"/>
         </g>
 
@@ -325,24 +336,41 @@
           <text x="875" y="177" text-anchor="middle" font-size="11" font-family="Inter,sans-serif" font-weight="700" fill="#37474F">Solvent Extraction</text>
           <!-- Internal connector -->
           <line x1="875" y1="142" x2="875" y2="152" stroke="#78909C" stroke-width="3"/>
-          <!-- Yellowcake output -->
-          <rect x="920" y="192" width="58" height="14" rx="2" fill="rgba(46,125,50,0.15)"/>
-          <text x="949" y="202" text-anchor="middle" font-size="7" font-family="Inter,sans-serif" font-weight="700" fill="#2E7D32">Yellowcake →</text>
-          <text x="949" y="212" text-anchor="middle" font-size="6.5" font-family="Inter,sans-serif" font-weight="600" fill="#388E3C">(U₃O₈)</text>
+          <!-- PLS inlet pipe (left side of facility connects to recovery well pipe) -->
+          <path d="M 770 150 L 760 150 L 760 150" fill="none" stroke="#66BB6A" stroke-width="4" stroke-linecap="round"/>
+          <!-- Barren return outlet pipe (left side at top) -->
+          <path d="M 770 105 L 760 105" fill="none" stroke="#90CAF9" stroke-width="3" stroke-linecap="round"/>
         </g>
 
-        <!-- ═══════════ STATIC PIPES (always shown, ghosted until animated) ═══════════ -->
-        <!-- Step 1: Tank→Pump→Mixer surface pipes (now inside animated groups above) -->
-        <path id="prod-pipe-prep" d="M 140 195 L 158 195" fill="none" stroke="#90CAF9" stroke-width="5" opacity="0"/>
-        <path id="prod-pipe-mix" d="M 196 183 L 215 183" fill="none" stroke="#90CAF9" stroke-width="5" opacity="0"/>
+        <!-- ═══ YELLOWCAKE OUTPUT (clickable, separate from facility) ═══ -->
+        <g id="prod-yellowcake" opacity="0" class="hover-group" onclick="handleLabelClick('prod-yellowcake')" filter="url(#prod-shadow)">
+          <!-- Output drum -->
+          <rect x="918" y="188" width="60" height="22" rx="4" fill="#FFF9C4" stroke="#F9A825" stroke-width="1.5"/>
+          <text x="948" y="198" text-anchor="middle" font-size="7.5" font-family="Inter,sans-serif" font-weight="800" fill="#E65100">Yellowcake</text>
+          <text x="948" y="208" text-anchor="middle" font-size="6.5" font-family="Inter,sans-serif" font-weight="600" fill="#F57F17">(U₃O₈)</text>
+          <!-- Arrow from facility -->
+          <line x1="972" y1="172" x2="948" y2="188" stroke="#F9A825" stroke-width="1.5" marker-end="url(#prod-arrow-gray)"/>
+        </g>
 
-        <!-- Step 2: Mixer → Injection Well (down through ground) -->
+        <!-- ═══ MONITORING WELL (clickable) ═══ -->
+        <g id="prod-monitor-well" opacity="0" class="hover-group" onclick="handleLabelClick('prod-monitor')">
+          <rect x="490" y="210" width="8" height="295" fill="#90A4AE" stroke="#607D8B" stroke-width="1" rx="1" opacity="0.6"/>
+          <rect x="486" y="205" width="16" height="8" fill="#78909C" stroke="#546E7A" stroke-width="1" rx="1"/>
+          <text x="494" y="200" text-anchor="middle" font-size="7" font-family="Inter,sans-serif" font-weight="600" fill="#90A4AE">Monitor</text>
+        </g>
+
+        <!-- ═══════════ STATIC PIPES (ghosted until animated) ═══════════ -->
+        <!-- Step 1: Tank→Pump→Mixer surface pipes (inside animated groups above for attachment) -->
+        <path id="prod-pipe-prep" d="M 140 195 L 150 195 L 150 183 L 158 183" fill="none" stroke="#90CAF9" stroke-width="5" opacity="0"/>
+        <path id="prod-pipe-mix" d="M 196 183 L 206 183 L 206 170 L 215 170" fill="none" stroke="#90CAF9" stroke-width="5" opacity="0"/>
+
+        <!-- Step 2: Mixer outlet → Injection Well (down through ground) -->
         <path id="prod-pipe-inject-base" d="M 245 208 L 356 208 L 356 500" fill="none" stroke="#64B5F6" stroke-width="8" opacity="0"/>
         <!-- Step 3: Aquifer flow (lateral across ore body) -->
         <path id="prod-pipe-aquifer-base" d="M 370 420 Q 550 465 744 420" fill="none" stroke="#81C784" stroke-width="8" opacity="0"/>
-        <!-- Step 4: Recovery Well → surface -->
+        <!-- Step 4: Recovery Well → Processing Facility -->
         <path id="prod-pipe-recover-base" d="M 744 420 L 744 208 L 770 150" fill="none" stroke="#66BB6A" stroke-width="8" opacity="0"/>
-        <!-- Step 5: Return line (Facility → Mixer) -->
+        <!-- Step 5: Return line (Facility barren outlet → Mixer top) -->
         <path id="prod-pipe-return-base" d="M 770 105 L 290 105 L 290 138 L 275 138" fill="none" stroke="#90CAF9" stroke-width="5" opacity="0" stroke-dasharray="8 6"/>
 
         <!-- ═══════════ ANIMATED OVERLAY PATHS ═══════════ -->
