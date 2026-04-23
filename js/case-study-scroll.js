@@ -97,8 +97,13 @@ export function initCaseStudyScroll() {
     currentStep = Math.max(currentStep, stepIndex);
 
     const btnNext = document.getElementById('btn-next-step');
-    if (currentStep >= totalSteps && btnNext) {
-      btnNext.style.display = 'none';
+    if (btnNext) {
+      if (currentStep >= totalSteps) {
+        btnNext.style.display = 'none';
+      } else {
+        const nextTarget = currentStep + 1;
+        btnNext.innerHTML = `Next step (${nextTarget}/${totalSteps}) <span>→</span>`;
+      }
     }
 
     const stepId = '#pstep-' + stepIndex;
