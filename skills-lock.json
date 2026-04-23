@@ -1,6 +1,21 @@
 {
   "version": 1,
   "skills": {
+    "ckm:design-system": {
+      "source": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "sourceType": "github",
+      "computedHash": "49b8308dc428c66b0983f4b3d102c522c495f62538121064d1e82a040b1afd2c"
+    },
+    "ckm:slides": {
+      "source": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "sourceType": "github",
+      "computedHash": "6d753831914ed6703b7222153f2710efc2f195f0ab24fd2119c76c2b6d1a6ba1"
+    },
+    "design-anti-patterns": {
+      "source": "Jamie-BitFlight/claude_skills",
+      "sourceType": "github",
+      "computedHash": "c6b13ff8eaa41b59734c448bc9f69e0b7dc75df618019b0b1b2a070fb8b1a98d"
+    },
     "gsap-core": {
       "source": "greensock/gsap-skills",
       "sourceType": "github",
@@ -36,6 +51,11 @@
       "sourceType": "github",
       "computedHash": "1ab2387f6e694718a4f1b5acf2a4ab16e1b884c3428adf5f6b26d830f00826cf"
     },
+    "humanizer": {
+      "source": "zed-industries/zed",
+      "sourceType": "github",
+      "computedHash": "421a3d9577f6bb31f61d2aa0d083d36a648fa687a4545c0e4d5bf349c07ad572"
+    },
     "image-to-svg": {
       "source": "oaustegard/claude-skills",
       "sourceType": "github",
@@ -50,6 +70,11 @@
       "source": "supermemoryai/skills",
       "sourceType": "github",
       "computedHash": "9be4b3e0afe9d3cbb1bcf238f8504f9a23552f742350fbef9483070112ac1977"
+    },
+    "ui-ux-pro-max": {
+      "source": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "sourceType": "github",
+      "computedHash": "0a413bf988d06481f69bb81df2070741c3ba12dd9f1be2706d57f259c905992d"
     }
   }
 }

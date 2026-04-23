@@ -1,17 +1,23 @@
-.base-green-pipe {
-  stroke: rgba(16, 185, 129, 0.15);
+/* ── Pipe base styles ── */
+.base-blue-pipe {
+  stroke: rgba(88, 166, 255, 0.15);
 }
-.base-orange-pipe {
-  stroke: rgba(245, 158, 11, 0.1);
+.base-brine-pipe {
+  stroke: rgba(139, 148, 158, 0.1);
 }
+
+/* ── Stroke reveal animation baseline ── */
 #green-fill-overlay, #orange-fill-overlay, .prod-path-overlay {
   stroke-dasharray: 1000;
   stroke-dashoffset: 1000;
 }
+
+/* ── Continuous flow: hidden until GSAP activates ── */
 .continuous-flow {
   opacity: 0;
-  /* GSAP handles rendering now */
 }
+
+/* ── Typewriter cursor ── */
 .typewriter::after {
   content: '|';
   animation: blink 1s step-start infinite;
@@ -22,6 +28,8 @@
 @keyframes blink {
   50% { opacity: 0; }
 }
+
+/* ── Paused flow override ── */
 svg.paused .continuous-flow {
   animation-play-state: paused !important;
 }

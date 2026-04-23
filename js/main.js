@@ -1,49 +1,49 @@
 import { elements } from './ui.js';
 import { state, runSequence, pauseSequence, resumeSequence, resetSimulation } from './simulation.js';
 import { initModal } from './modal.js';
-import { initProduction, resetProduction } from './production-timeline.js';
+import { initCaseStudyScroll } from './case-study-scroll.js';
 
+// Setup basic physical model
 initModal();
-initProduction();
 
-export let currentMode = 'demo';
-elements.labelDemo.classList.add('active');
-
-const demoControls = document.getElementById('demo-controls');
-const prodControls = document.getElementById('prod-controls');
-const narrationCard = document.getElementById('narration-card');
-
-elements.modeToggle.addEventListener('change', (e) => {
-  resetSimulation(); // ensure clean demo state
-  currentMode = e.target.checked ? 'production' : 'demo';
-  
-  if (currentMode === 'demo') {
-    elements.svgContainer.style.display = 'block';
-    elements.prodContainer.style.display = 'none';
-    elements.labelDemo.classList.add('active');
-    elements.labelProd.classList.remove('active');
-    demoControls.style.display = '';
-    prodControls.style.display = 'none';
-    narrationCard.style.display = 'none';
-  } else {
-    elements.svgContainer.style.display = 'none';
-    elements.prodContainer.style.display = 'block';
-    elements.labelProd.classList.add('active');
-    elements.labelDemo.classList.remove('active');
-    demoControls.style.display = 'none';
-    prodControls.style.display = '';
-    narrationCard.style.display = '';
-    resetProduction();
-  }
-});
+// Setup scroll-triggered animations for the case study production diagram
+initCaseStudyScroll();
 
 elements.btnPlayPause.addEventListener('click', () => {
   if (!state.isRunning && !state.sequenceFinished) {
     runSequence();
+    elements.btnPlayPause.textContent = "Pause System";
   } else if (state.isRunning) {
     pauseSequence();
+    elements.btnPlayPause.textContent = "Resume System";
   } else {
     resumeSequence();
+    elements.btnPlayPause.textContent = "Pause System";
   }
 });
-elements.btnRestart.addEventListener('click', resetSimulation);
+elements.btnRestart.addEventListener('click', () => {
+  resetSimulation();
+  elements.btnPlayPause.textContent = "Start System";
+});
+
+// Sidebar active state on scroll
+const sections = document.querySelectorAll('.content-section');
+const navLinks = document.querySelectorAll('#sidebar-nav a');
+
+function updateActiveNav() {
+  let current = '';
+  sections.forEach(section => {
+    const top = section.offsetTop - 120;
+    if (window.scrollY >= top) {
+      current = section.getAttribute('id');
+    }
+  });
+  navLinks.forEach(link => {
+    link.classList.remove('active');
+    if (link.getAttribute('href') === '#' + current) {
+      link.classList.add('active');
+    }
+  });
+}
+document.querySelector('.main-content').addEventListener('scroll', updateActiveNav);
+window.addEventListener('scroll', updateActiveNav);

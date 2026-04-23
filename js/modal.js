@@ -2,89 +2,89 @@ import { elements } from './ui.js';
 let typewriterTimeout = null;
 const labelData = {
   barren: {
-    title: 'Barren Lixiviant Tank',
-    color: '#10b981',
-    description: 'The starting point. Barren lixiviant (a mixture of water and oxidant/complexing agent) is prepared here before being pumped into the ground.'
+    title: 'Fresh Water Tank',
+    color: '#58a6ff',
+    description: 'The starting reservoir. Fresh water is stored here before being pumped underground through the injection well. In actual Austrian operations, the water quality is monitored to prevent unwanted chemical reactions with the salt body.'
   },
   injection: {
     title: 'Injection Well',
-    color: '#34d399',
-    description: 'The lixiviant is pumped down the injection well and forced through the porous uranium ore body.'
+    color: '#58a6ff',
+    description: 'Fresh water travels down this well under pressure, reaching the salt deposit below. The 18V motor driven pump simulates the high pressure injection systems used at sites like Hallstatt and Altaussee.'
   },
   overburden: {
     title: 'Overburden',
-    color: '#64748b',
-    description: 'The rock and soil layers above the ore deposit. Because of ISR, this material is not removed or disturbed, minimizing environmental impact.'
+    color: '#6e7681',
+    description: 'The rock and soil layers sitting above the salt deposit. Solution mining leaves this material completely undisturbed, which is one of the main environmental advantages over traditional shaft mining.'
   },
   ore: {
-    title: 'Uranium Ore Body',
-    color: '#b45309',
-    description: 'The target zone. As the lixiviant flows through the porous rock, it dissolves the uranium minerals, turning into \'pregnant\' lixiviant.'
+    title: 'Salt Deposit (Haselgebirge)',
+    color: '#8b949e',
+    description: 'The target zone. In the Austrian Alps this is the Haselgebirge Formation, a mixture of rock salt, clay, mudstone, and gypsum. Fresh water dissolves the salt component and leaves the insoluble materials behind.'
   },
   production: {
     title: 'Production Well',
-    color: '#f59e0b',
-    description: 'Submersible pumps draw the uranium-rich (pregnant) solution back to the surface for processing.'
+    color: '#8b949e',
+    description: 'The saturated brine (about 26% NaCl by weight) is pumped back to the surface through this well. Submersible pumps at the bottom of the well handle the lifting.'
   },
   pregnant: {
-    title: 'Pregnant Lixiviant Tank',
-    color: '#d97706',
-    description: 'Collects the uranium-laden solution. From here, the fluid goes to the processing plant where the uranium is extracted, and the fluid is recycled back to the barren tank.'
+    title: 'Saturated Brine Tank',
+    color: '#6e7681',
+    description: 'Collects the salt laden brine returning from underground. From here the brine is piped to the processing facility where water is evaporated off, leaving behind high purity crystalline salt.'
   },
   'prod-barren-tank': {
-    title: 'Lixiviant Storage Tanks',
-    color: '#3b82f6',
-    description: 'Storage for the base chemicals (acid or bicarbonate) and water used to create the lixiviant solution. These tanks ensure a steady supply of leaching agents for the continuous ISR process.'
+    title: 'Water Supply Tanks',
+    color: '#58a6ff',
+    description: 'Storage for the fresh water and any additives used in the injection process. In Austrian operations, the water supply is carefully metered to control the rate of cavern growth underground.'
   },
   'prod-pump': {
-    title: 'High-Pressure Injection Pump',
-    color: '#455A64',
-    description: 'A heavy-duty industrial pump that pressurizes the lixiviant solution, providing the necessary force to drive the fluid deep underground and through the porous ore body.'
+    title: 'High Pressure Injection Pump',
+    color: '#30363d',
+    description: 'Pressurizes the water for injection underground. The pump must generate enough pressure to force water through the borehole and into the salt body at depths of up to 400 metres.'
   },
   'prod-mixer-info': {
-    title: 'Precision Mixer',
-    color: '#90A4AE',
-    description: 'The mixer blends water, chemicals, and recycled barren lixiviant at exact ratios. Constant agitation ensures a uniform solution before it is sent to the injection wells.'
+    title: 'Mixing Station',
+    color: '#8b949e',
+    description: 'Blends fresh water with recycled brine at controlled ratios. The mixture is agitated continuously to ensure uniform concentration before it enters the injection well.'
   },
   'prod-injection': {
     title: 'Injection Wellhead',
-    color: '#60a5fa',
-    description: 'The entry point to the subsurface. The wellhead monitors pressure and flow rates as the lixiviant is injected into the target aquifer layer.'
+    color: '#58a6ff',
+    description: 'Surface control point where pressure and flow rate are monitored as water enters the borehole. Sensors here detect any anomalies that could indicate cavern instability.'
   },
   'prod-recovery': {
     title: 'Recovery Wellhead',
-    color: '#4ade80',
-    description: 'Submersible pumps located at the bottom of the recovery well lift the pregnant solution back to the surface. It is designed to capture the plume created by the injection wells.'
+    color: '#3fb950',
+    description: 'The saturated brine exits here. Submersible pumps at the well bottom lift the heavy brine to the surface. Flow rates are tracked to calculate dissolution progress.'
   },
   'prod-facility-info': {
-    title: 'Uranium Processing Facility',
-    color: '#CFD8DC',
-    description: 'The heart of the surface operation. Here, Ion Exchange (IX) or Solvent Extraction (SX) processes strip the uranium from the solution, producing yellowcake (U3O8) and regenerating the lixiviant for reuse.'
+    title: 'Saltworks (Processing Facility)',
+    color: '#c9d1d9',
+    description: 'At the Ebensee saltworks, raw brine undergoes the Schweizerhalle purification process to remove calcium and magnesium. Vacuum evaporation then crystallizes the salt to 99.9% NaCl purity.'
   },
   'prod-ore': {
-    title: 'Uranium Ore Body',
-    color: '#166534',
-    description: 'A sandstone aquifer hosted between impermeable clay or shale layers. The uranium minerals reside on the sand grains and are dissolved as the lixiviant flow passes through.'
+    title: 'Salt Body',
+    color: '#6e7681',
+    description: 'The underground salt formation. As water dissolves the salt, an expanding cavern forms. The shape and growth of this cavern are carefully monitored to prevent subsidence at the surface.'
   },
   'prod-overburden': {
-    title: 'Subsurface Strata',
-    color: '#8B7355',
-    description: 'Various layers of dirt, rock, and confining shale. ISR mining targets only the specific ore zone, leaving the surrounding overburden undisturbed and protecting upper water tables.'
+    title: 'Subsurface strata',
+    color: '#30363d',
+    description: 'Layers of soil, rock, and confining formations above the salt deposit. Solution mining targets only the salt zone, keeping these layers intact and protecting groundwater above.'
   },
   'prod-aquifer': {
-    title: 'Ore Body Aquifer',
-    color: '#D4C5A0',
-    description: 'A permeable sandstone layer that holds the uranium deposit. Its permeability allows lixiviant to circulate through the rock, reaching the minerals for dissolution.'
+    title: 'Salt formation zone',
+    color: '#c9d1d9',
+    description: 'The permeable zone where salt dissolution occurs. Water injected from the surface circulates through this zone, gradually expanding the cavern as salt is removed.'
   },
   'prod-yellowcake': {
-    title: 'Yellowcake (U₃O₈)',
-    color: '#F9A825',
-    description: 'The final product of ISR mining. After Ion Exchange and Solvent Extraction strip uranium from the Pregnant Leach Solution, the concentrate is precipitated, filtered, dried, and packaged as yellowcake — a bright-yellow uranium oxide powder (U₃O₈). It is then shipped to conversion facilities for further enrichment.'
+    title: 'Refined Salt Output',
+    color: '#f78166',
+    description: 'The final product: vacuum evaporated salt at 99.9% purity. This is packaged for food grade, pharmaceutical, and industrial chemical markets. Salinen Austria AG produces about 1.2 million tonnes annually.'
   },
   'prod-monitor': {
     title: 'Monitoring Well',
-    color: '#78909C',
-    description: 'Monitoring wells are drilled around the wellfield perimeter to continuously sample groundwater quality. They detect any excursion of mining fluids beyond the production zone, ensuring environmental compliance and protecting surrounding aquifers.'
+    color: '#8b949e',
+    description: 'Monitoring wells around the extraction zone continuously sample groundwater quality. They detect any brine migration beyond the intended production area, which would indicate a breach in the confining layers.'
   }
 };
 export function initModal() {
@@ -92,10 +92,8 @@ export function initModal() {
     const data = labelData[id];
     if(!data) return;
     elements.modalIcon.style.backgroundColor = data.color;
-    elements.modalIcon.style.boxShadow = `0 0 15px ${data.color}80`;
     elements.modalTitle.textContent = data.title;
     elements.modal.classList.add('active');
-    
     typewriterEffect(data.description);
   };
   elements.modalClose.addEventListener('click', () => {
@@ -110,13 +108,12 @@ function typewriterEffect(text) {
   if(typewriterTimeout) clearTimeout(typewriterTimeout);
   elements.modalDesc.textContent = '';
   elements.modalDesc.classList.remove('done');
-  
   let i = 0;
   function type() {
     if (i < text.length) {
       elements.modalDesc.textContent += text.charAt(i);
       i++;
-      typewriterTimeout = setTimeout(type, 20); 
+      typewriterTimeout = setTimeout(type, 18);
     } else {
       elements.modalDesc.classList.add('done');
     }

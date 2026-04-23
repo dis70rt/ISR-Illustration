@@ -1,50 +1,232 @@
-.app-header {
-  text-align: center;
-  padding: 2rem 0 1rem;
-  z-index: 10;
+/* ── Page layout: sidebar + scrollable content ── */
+.page-layout {
+  display: block;
+  min-height: 100vh;
 }
-.app-header h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #ffffff;
-  margin-bottom: 0.5rem;
+
+/* ── Sidebar ── */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sidebar-width);
+  height: 100vh;
+  overflow-y: auto;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  padding: var(--spacing-lg) 0;
+  z-index: 50;
 }
-.app-header p {
-  color: var(--text-muted);
-  font-size: 1.1rem;
+.sidebar-title {
+
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-heading);
+  padding: 0 var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  line-height: 1.4;
 }
-.sim-wrapper {
-  position: relative;
-  width: 100%;
-  max-width: 1200px;
-  flex: 1;
+.sidebar-nav {
+  list-style: none;
+}
+.sidebar-nav li a {
+  display: block;
+  padding: 8px var(--spacing-md);
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: color 150ms ease, border-color 150ms ease, background 150ms ease;
+}
+.sidebar-nav li a:hover {
+  color: var(--text);
+  background: var(--border-light);
+  text-decoration: none;
+}
+.sidebar-nav li a.active {
+  color: var(--text-heading);
+  border-left-color: var(--primary);
+  background: var(--border-light);
+}
+
+/* ── Main content area ── */
+.main-content {
+  margin-left: var(--sidebar-width);
+  padding: var(--spacing-xl) var(--spacing-xl) 80px;
+  width: calc(100% - var(--sidebar-width));
+}
+
+.bento-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  gap: var(--spacing-lg);
+  max-width: 1000px;
+  margin: 0 auto;
 }
+
+/* ── Sections ── */
+.content-section.bento-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: var(--spacing-xl);
+  scroll-margin-top: 24px;
+}
+.content-section h2 {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text-heading);
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--border);
+}
+.content-section h3 {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text-heading);
+  margin: var(--spacing-lg) 0 var(--spacing-sm);
+}
+.content-section p {
+  color: var(--text);
+  line-height: 1.7;
+  margin-bottom: var(--spacing-md);
+  font-size: 15px;
+}
+.content-section ul, .content-section ol {
+  padding-left: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+}
+.content-section li {
+  margin-bottom: var(--spacing-sm);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+/* ── Simulation containers ── */
 .simulation-container {
   width: 100%;
-  height: 60vh;
-  min-height: 500px;
   position: relative;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--bg);
+  margin-bottom: var(--spacing-md);
 }
-svg#diagram {
+.simulation-container svg {
   width: 100%;
-  height: 100%;
-  filter: drop-shadow(0 20px 30px rgba(0,0,0,0.5));
+  display: block;
 }
+
+/* ── SVG labels ── */
 .svg-label {
-  font-family: 'Inter', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
   font-size: 16px;
   font-weight: 600;
   pointer-events: none;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
 }
 .svg-label-small {
-  font-family: 'Inter', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
   font-size: 10px;
   font-weight: 700;
-  fill: #94a3b8;
+  fill: #8b949e;
   pointer-events: none;
+}
+
+/* ── Reference links ── */
+.ref-list {
+  list-style: none;
+  padding: 0;
+  margin-top: var(--spacing-md);
+}
+.ref-list li {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-xs);
+}
+.ref-list li a {
+  color: var(--link);
+}
+
+/* ── Scroll-Telling Layout ── */
+.scroll-telling-layout {
+  display: flex;
+  position: relative;
+  gap: var(--spacing-xl);
+}
+.sticky-visual {
+  flex: 1;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 40px;
+  align-self: flex-start;
+  /* subtle bento outline for visual */
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  overflow: hidden;
+}
+.sticky-visual svg {
+  display: block;
+  width: 100%;
+}
+.scroll-steps {
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 50vh; /* keep the visual active until final step is done */
+}
+.step-card {
+  padding: var(--spacing-lg);
+  margin-bottom: 80vh; /* huge gap between steps to allow scrolling */
+  border-radius: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  transition: opacity 0.3s ease;
+  opacity: 0.3; /* dim until active */
+}
+.step-card.active-step {
+  opacity: 1;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 1px var(--primary);
+}
+.step-card.no-border {
+  border: none;
+  background: transparent;
+  opacity: 1; /* always full opacity for standard text blocks */
+  margin-bottom: var(--spacing-xl);
+  padding: 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .page-layout {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding: var(--spacing-md) 0;
+  }
+  .sidebar-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+  }
+  .sidebar-nav li a {
+    border-left: none;
+    border-bottom: 2px solid transparent;
+    padding: var(--spacing-sm) 12px;
+    font-size: 12px;
+  }
+  .sidebar-nav li a.active {
+    border-left: none;
+    border-bottom-color: var(--primary);
+  }
+  .main-content {
+    margin-left: 0;
+    padding: var(--spacing-md);
+  }
 }
