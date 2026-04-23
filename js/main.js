@@ -47,3 +47,29 @@ function updateActiveNav() {
 }
 document.querySelector('.main-content').addEventListener('scroll', updateActiveNav);
 window.addEventListener('scroll', updateActiveNav);
+
+// Toggle expandable content (Environmental & Hydrogen)
+const btnShowMore = document.getElementById('btn-show-more');
+const expandableContent = document.getElementById('expandable-content');
+
+if (btnShowMore && expandableContent) {
+  btnShowMore.addEventListener('click', () => {
+    const isOpen = expandableContent.classList.contains('open');
+    expandableContent.classList.toggle('open');
+    
+    // Update button text and icon rotation
+    const span = btnShowMore.querySelector('span');
+    const svg = btnShowMore.querySelector('svg');
+    
+    if (isOpen) {
+      span.textContent = 'Show more';
+      svg.style.transform = 'rotate(0deg)';
+    } else {
+      span.textContent = 'Show less';
+      svg.style.transform = 'rotate(180deg)';
+      
+      // Refresh ScrollTrigger as the page height changed
+      setTimeout(() => ScrollTrigger.refresh(), 300);
+    }
+  });
+}
