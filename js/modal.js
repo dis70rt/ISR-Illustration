@@ -52,7 +52,7 @@ const labelData = {
     description: 'Surface control point where pressure and flow rate are monitored as water enters the borehole. Sensors here detect any anomalies that could indicate cavern instability.'
   },
   'prod-recovery': {
-    title: 'Recovery Wellhead',
+    title: 'Production Wellhead',
     color: '#3fb950',
     description: 'The saturated brine exits here. Submersible pumps at the well bottom lift the heavy brine to the surface. Flow rates are tracked to calculate dissolution progress.'
   },
